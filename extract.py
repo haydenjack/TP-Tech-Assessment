@@ -11,8 +11,9 @@ def extract_reviews(filepath: str) -> pd.DataFrame:
         return review_df
     except FileNotFoundError:
         logging.error("This file could not be found, try again.")
-    
+        return None
+
 
 if __name__ == "__main__":
-    
+
     reviews = extract_reviews("dataops_tp_reviews.csv")

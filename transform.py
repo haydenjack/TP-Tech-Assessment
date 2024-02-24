@@ -9,7 +9,7 @@ EMAIL_REGEX = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z
 
 
 def to_snake_case(words: str) -> str:
-    "Converts words to snake case for consistency."
+    "Converts string to snake case for consistency."
     if not isinstance(words, str):
         raise ValueError("Only str values can be converted.")
     return words.lower().replace(" ", "_")
@@ -22,21 +22,21 @@ def validate_email(email: str) -> str | None:
     return None
 
 
-def format_column_names(df: pd.DataFrame) -> pd.DataFrame:
+def format_column_names(dataframe: pd.DataFrame) -> pd.DataFrame:
     "Converts data frame column names to snake case."
-    for column in df.columns:
-        df.rename(columns={column: to_snake_case(column)}, inplace=True)
-    return df
+    for column in dataframe.columns:
+        dataframe.rename(columns={column: to_snake_case(column)}, inplace=True)
+    return dataframe
 
 
-def transform(df: pd.DataFrame) -> pd.DataFrame:
+def transform(dataframe: pd.DataFrame) -> pd.DataFrame:
     "Ensures the data frame is properly cleaned and formatted."
-    df = format_column_names(df)
+    dataframe = format_column_names(dataframe)
     # Replaces invalid emails with None
-    df["email_address"] = df["email_address"].apply(validate_email)
+    dataframe["email_address"] = dataframe["email_address"].apply(validate_email)
     # Converts review_date to datetime64 data type
-    df["review_date"] = pd.to_datetime(df["review_date"], format="%Y-%m-%d")
-    return df
+    dataframe["review_date"] = pd.to_datetime(dataframe["review_date"], format="%Y-%m-%d")
+    return dataframe
 
 
 if __name__ == "__main__":
