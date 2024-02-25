@@ -34,14 +34,6 @@ def transform(dataframe: pd.DataFrame) -> pd.DataFrame:
     dataframe = format_column_names(dataframe)
     # Replaces invalid emails with None
     dataframe["email_address"] = dataframe["email_address"].apply(validate_email)
-    # Converts review_date to datetime64 data type
+    # Converts review_date from object to datetime64 data type
     dataframe["review_date"] = pd.to_datetime(dataframe["review_date"], format="%Y-%m-%d")
     return dataframe
-
-
-if __name__ == "__main__":
-
-    reviews = extract_reviews("dataops_tp_reviews.csv")
-    df = transform(reviews)
-
-    print(df.head(20))
