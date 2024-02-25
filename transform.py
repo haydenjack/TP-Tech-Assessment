@@ -2,6 +2,7 @@
 
 import re
 import pandas as pd
+from datetime import datetime
 
 from extract import extract_reviews
 
@@ -34,6 +35,8 @@ def transform(dataframe: pd.DataFrame) -> pd.DataFrame:
     dataframe = format_column_names(dataframe)
     # Replaces invalid emails with None
     dataframe["email_address"] = dataframe["email_address"].apply(validate_email)
-    # Converts review_date from object to datetime64 data type
-    dataframe["review_date"] = pd.to_datetime(dataframe["review_date"], format="%Y-%m-%d")
+    # Converts valid dates to datetime, replaces invalid dates with NaT (errors='coerce')
+    dataframe["review_date"] = pd.to_datetime(dataframe["review_date"], format="%Y-%m-%d", errors="coerce")
+    # Removes reviews that have an invalid date (NaT)
+    dataframe = dataframe.loc[dataframe.review_date.notnull()]
     return dataframe

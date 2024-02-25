@@ -29,10 +29,10 @@ def upload_dataframe(conn: connection, dataframe: pd.DataFrame) -> None:
                     (reviewer_name, review_title, review_rating, review_content, email_address, country, review_date)
                     VALUES (%s, %s, %s, %s, %s, %s, %s);
                     """)
+
     list_dataframe = dataframe.values.tolist()
 
     with conn.cursor() as cur:
         cur.executemany(insert_query, list_dataframe)
         conn.commit()
-    
     conn.close()
