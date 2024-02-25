@@ -14,8 +14,6 @@ REVIEW_KEYS = ["reviewer_name",
                "country",
                "review_date"]
 
-# Create a function that adds a new review to the table
-# Create a function that updates the review content
 
 def add_review(conn: connection, review_data: dict) -> None:
     "Uploads a new review to the database."
@@ -38,6 +36,16 @@ def add_review(conn: connection, review_data: dict) -> None:
     conn.close()
 
 
+def update_review(conn:connection, review_id: int, review_update: str) -> None:
+    "Updates the content of a review given the review id."
+    update_query = """UPDATE reviews SET review_content = %s WHERE id = %s"""
+    
+    with conn.cursor() as cur:
+        cur.execute(update_query, vars=(review_update, review_id))
+        conn.commit()
+    conn.close()
+
+
 if __name__ == "__main__":
 
     review_dict = {
@@ -52,4 +60,4 @@ if __name__ == "__main__":
 
     conn = get_db_connection()
 
-    add_review(conn, review_dict)
+    update_review(conn, 80, 'Updated from the python function')

@@ -2,9 +2,7 @@
 
 import re
 import pandas as pd
-from datetime import datetime
 
-from extract import extract_reviews
 
 EMAIL_REGEX = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
@@ -35,8 +33,10 @@ def transform(dataframe: pd.DataFrame) -> pd.DataFrame:
     dataframe = format_column_names(dataframe)
     # Replaces invalid emails with None
     dataframe["email_address"] = dataframe["email_address"].apply(validate_email)
-    # Converts valid dates to datetime, replaces invalid dates with NaT (errors='coerce')
-    dataframe["review_date"] = pd.to_datetime(dataframe["review_date"], format="%Y-%m-%d", errors="coerce")
+    # Converts valid dates to datetime, replaces invalid dates with NaT (errors="coerce")
+    dataframe["review_date"] = pd.to_datetime(dataframe["review_date"],
+                                              format="%Y-%m-%d",
+                                              errors="coerce")
     # Removes reviews that have an invalid date (NaT)
     dataframe = dataframe.loc[dataframe.review_date.notnull()]
     return dataframe
