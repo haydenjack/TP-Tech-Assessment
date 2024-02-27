@@ -5,6 +5,7 @@ import pandas as pd
 
 
 EMAIL_REGEX = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+DATE_FORMAT = "%Y-%m-%d"
 
 
 def to_snake_case(words: str) -> str:
@@ -16,8 +17,9 @@ def to_snake_case(words: str) -> str:
 
 def validate_email(email: str) -> str | None:
     "Ensures email has a valid format."
-    if re.fullmatch(EMAIL_REGEX, email):
-        return email
+    if isinstance(email, str):
+        if re.fullmatch(EMAIL_REGEX, email):
+            return email
     return None
 
 
@@ -35,7 +37,7 @@ def transform(dataframe: pd.DataFrame) -> pd.DataFrame:
     dataframe["email_address"] = dataframe["email_address"].apply(validate_email)
     # Converts valid dates to datetime, replaces invalid dates with NaT (errors="coerce")
     dataframe["review_date"] = pd.to_datetime(dataframe["review_date"],
-                                              format="%Y-%m-%d",
+                                              format=DATE_FORMAT,
                                               errors="coerce")
     # Removes reviews that have an invalid date (NaT)
     dataframe = dataframe.loc[dataframe.review_date.notnull()]

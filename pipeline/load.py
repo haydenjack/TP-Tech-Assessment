@@ -1,8 +1,7 @@
 "This file contains the functionality to load a data frame into a database."
 
-import logging
 from os import environ
-from psycopg2 import connect, Error
+from psycopg2 import connect, OperationalError
 from psycopg2.extensions import connection
 from dotenv import load_dotenv
 import pandas as pd
@@ -17,9 +16,8 @@ def get_db_connection() -> connection:
         return connect(dbname=environ["DB_NAME"],
                     host=environ["DB_HOST"],
                     user=environ["DB_USER"])
-    except Error as err:
-        logging.error("Could not establish connection to the database.")
-        return None
+    except OperationalError:
+        raise OperationalError("Could not establish connection to the database.")
 
 
 def upload_dataframe(conn: connection, dataframe: pd.DataFrame) -> None:

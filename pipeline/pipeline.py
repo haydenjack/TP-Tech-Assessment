@@ -1,8 +1,8 @@
 "This file combines the functionality of the extract, transform and load scripts."
 
-from extract import extract_reviews
-from transform import transform
-from load import get_db_connection, upload_dataframe
+from pipeline.extract import extract_reviews
+from pipeline.transform import transform
+from pipeline.load import get_db_connection, upload_dataframe
 
 if __name__ == "__main__":
 

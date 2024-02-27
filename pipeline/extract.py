@@ -9,6 +9,5 @@ def extract_reviews(filepath: str) -> pd.DataFrame:
     try:
         review_df = pd.read_csv(filepath)
         return review_df
-    except FileNotFoundError:
-        logging.error("This file could not be found, try again.")
-        return None
+    except FileNotFoundError as exc:
+        raise FileNotFoundError("This file could not be found, try again.") from exc
