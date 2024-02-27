@@ -1,6 +1,5 @@
 "This file contains the functionality to extract review data from a csv file."
 
-import logging
 import pandas as pd
 
 
