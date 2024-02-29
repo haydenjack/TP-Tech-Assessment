@@ -48,8 +48,8 @@ This directory contains the scripts that extracts the reviews from a csv file, p
 - `test_pipeline.py`: Contains unit tests for the pipeline to ensure reliability. Run with `pytest test_pipeline.py` to ensure the functions are properly working.
 
 **Running the Pipeline:**
-- Ensure the required python libraries are installed as noted in '✅ Getting Started.'
-- Execute:
+1. Ensure the required python libraries are installed as noted in '✅ Getting Started.'
+2. Execute:
     ```sh
     python3 pipeline.py
     ```
