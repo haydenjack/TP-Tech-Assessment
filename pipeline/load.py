@@ -16,18 +16,18 @@ def get_db_connection() -> connection:
         return connect(dbname=environ["DB_NAME"],
                     host=environ["DB_HOST"],
                     user=environ["DB_USER"])
-    except OperationalError:
-        raise OperationalError("Could not establish connection to the database.")
+    except OperationalError as exc:
+        raise OperationalError("Could not establish connection to the database.") from exc
 
 
 def upload_dataframe(conn: connection, dataframe: pd.DataFrame) -> None:
     "Uploads extracted & transformed data to relevant database."
-    insert_query = ("""
+    insert_query = """
                     INSERT INTO reviews
                     (reviewer_name, review_title, review_rating, review_content, email_address, country, review_date)
                     VALUES (%s, %s, %s, %s, %s, %s, %s);
-                    """)
-
+                    """
+    # Converts each row to a list so it fits into the insert query with executemany()
     list_dataframe = dataframe.values.tolist()
 
     with conn.cursor() as cur:

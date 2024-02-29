@@ -3,9 +3,9 @@
 import pytest
 import pandas as pd
 
-from pipeline.extract import extract_reviews
-from pipeline.transform import to_snake_case, validate_email, format_column_names
-from pipeline.review_functions import validate_new_review
+from extract import extract_reviews
+from transform import to_snake_case, validate_email, format_column_names
+from review_functions import validate_new_review
 
 
 def test_extract_reviews_no_file():

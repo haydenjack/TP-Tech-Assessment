@@ -1,12 +1,14 @@
 # Jack Hayden - Technical Assessment
 
-This repository contains a comprehensive solution for extracting, transforming and loading reviews into a database. It has additional functionality that allows reviews to be updated and new ones added to the database.
+This repository contains a solution for extracting, transforming and loading reviews into a database. It has additional functionality that allows reviews to be updated and new ones added to the database.
 
 ## 🗂️ Repository Structure
 
-- `database`: This directory contains the scripts needed to set up the initial database.
+### `database`
+ This directory contains the scripts needed to set up the initial database.
 
-- `pipeline`: This directory contains the scripts that create the ETL pipeline, as well as adding & updating reviews.
+### `pipeline`
+This directory contains the scripts that create the ETL pipeline, as well as adding & updating reviews.
 
 ## ✅ Getting Started
 

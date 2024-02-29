@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def extract_reviews(filepath: str) -> pd.DataFrame:
-    "Converts a csv file into a pandas data frame."
+    "Converts the reviews csv file into a pandas data frame."
     try:
         review_df = pd.read_csv(filepath)
         return review_df

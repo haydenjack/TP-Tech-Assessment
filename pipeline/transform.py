@@ -9,14 +9,14 @@ DATE_FORMAT = "%Y-%m-%d"
 
 
 def to_snake_case(words: str) -> str:
-    "Converts string to snake case for consistency."
+    "Converts string to snake case."
     if not isinstance(words, str):
         raise ValueError("Only str values can be converted.")
     return words.lower().replace(" ", "_")
 
 
 def validate_email(email: str) -> str | None:
-    "Ensures email has a valid format."
+    "Ensures email is a string and has a valid format."
     if isinstance(email, str):
         if re.fullmatch(EMAIL_REGEX, email):
             return email
@@ -24,7 +24,7 @@ def validate_email(email: str) -> str | None:
 
 
 def format_column_names(dataframe: pd.DataFrame) -> pd.DataFrame:
-    "Converts data frame column names to snake case."
+    "Converts data frame column names to snake case for consistency."
     for column in dataframe.columns:
         dataframe.rename(columns={column: to_snake_case(column)}, inplace=True)
     return dataframe

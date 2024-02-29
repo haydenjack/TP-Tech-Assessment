@@ -3,7 +3,7 @@
 from datetime import datetime
 from psycopg2.extensions import connection
 
-from pipeline.transform import validate_email
+from transform import validate_email
 
 
 REVIEW_KEYS = ["reviewer_name",
@@ -35,7 +35,7 @@ def validate_new_review(review_data: dict) -> dict:
     review_data["email_address"] = validate_email(review_data["email_address"])
 
     # Ensures each entry value is a str, except for the review_rating which should be an int
-    if not all(isinstance(review_data[i], str) for i in review_data.keys() if i != "review_rating"):
+    if not all(isinstance(review_data[i], str) for i in review_data.keys() if i not in ["review_rating","email_address"]):
         raise ValueError("Invalid data types in the review information.")
 
     return review_data
@@ -48,6 +48,7 @@ def add_review(conn: connection, review_data: dict) -> None:
     except ValueError as exc:
         raise ValueError("Could not upload new review, check review content.") from exc
 
+    # Converts the dictionary to a list of values so it can be used as an execute parameter
     review_list = list(review_data.values())
     with conn.cursor() as cur:
         cur.execute("""
@@ -56,6 +57,7 @@ def add_review(conn: connection, review_data: dict) -> None:
                     VALUES (%s, %s, %s, %s, %s, %s, %s);
                     """, review_list)
         conn.commit()
+    # Close connection to database to prevent stale connections causing issues
     conn.close()
 
 
@@ -63,10 +65,13 @@ def update_review(conn:connection, review_id: int, review_update: str) -> None:
     "Updates the content of a review given the review id."
     if not isinstance(review_update, str):
         raise ValueError("Review can only be updated with str.")
+    if not isinstance(review_id, int):
+        raise ValueError("Review ID must be a valid integer.")
 
     update_query = """UPDATE reviews SET review_content = %s WHERE id = %s"""
 
     with conn.cursor() as cur:
         cur.execute(update_query, vars=(review_update, review_id))
         conn.commit()
+    # Close connection to database to prevent stale connections causing issues
     conn.close()
